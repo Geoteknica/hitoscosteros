@@ -52,29 +52,13 @@
     
     <link rel="stylesheet" href="styles.css">
 
-    <style>
-        body {
-            padding: 0;
-            margin: 0;
-        }
-
-        html,
-        body,
-      
-        #map {
-            height: 100%;
-            position:relative;
-        }
-      
-    </style>
-
 </head>
 
-<body onload="myFunction()">
+<body>
   
   <div class="navbar"> Hitos Costeros </div>   
   
-  <div>
+  
     <button class="collapsible">¿Qué es el visualizador de hitos costeros? ¿Quién puede utilizarlo y para qué?</button>
     <div class="content">
     <p>Este visualizador, desarrollado por la Oficina del Programa de Zona Costanera y Cambio Climático del Departamento de Recursos Naturales y Ambientales de Puerto Rico, tiene el propósito de proveer una herramienta al público para explorar y aprender más sobre los hitos ubicados en la costa de Puerto Rico. Como las zonas costeras de Puerto Rico son áreas sensibles a los fenómenos naturales y a los efectos derivados del cambio climático, a través de este visualizador, los usuarios también podrán conocer sobre algunos de los peligros naturales a los que están expuestos los hitos costeros, así como otra información valiosa asociada a estos. Accede a <a href="pdf/Informacion-utilizada-para-describir-hitos.pdf" target="_blank"> este documento</a> para conocer qué información puede encontrar en este visualizador y en la base de datos que le acompaña.
@@ -111,7 +95,7 @@
       Le invitamos a utilizar esta herramienta para aprender más sobre los hitos costeros en Puerto Rico. 
     </p>
     </div>
-  </div>
+  
     <div id="layerLabel" style = "text-align: right; margin: 0;height: 25px; margin-left:0px;padding: 5px; color: snow; background-color:#004C62;line-height:25px;">¿Cuál categoría de hito costero te gustaría ver?        
     </div>
   
@@ -121,7 +105,7 @@
     <!-- place holder for map -->
   <div id="map"></div>
   
-  <div ><!--elimine la clase texto del div-->
+  <!--elimine la clase texto del div-->
     <button class="collapsible">¿Quieres conocer más detalles sobre los hitos costeros en Puerto Rico?</button>
     <div class="content">
     <p>¿Cuántos hitos costeros fueron identificados? ¿Dónde hay mayor cantidad de hitos costeros? ¿A qué peligros naturales están expuestos?  Presiona <a href="pdf/Infografias.pdf" target="_blank"> aquí</a> para aprender sobre estos y otros detalles.
@@ -136,7 +120,7 @@
     </p>  
     </div>
 
-  </div>  
+   
   <!-- Footer -->
   <footer>
     <div class="row">
@@ -185,21 +169,26 @@
       var ctlLayers;
       var baseLayers;
       var scale;
+      function showAlert() {
+      var myText = "Avisos legales Los datos presentados en esta página provienen de distintas fuentes y son para propósitos informativos solamente. El Departamento de Recursos Naturales y Ambientales no garantiza ni asegura la exactitud, actualización o integridad de los datos. Algunos de los hitos costeros pueden estar cerrados o ubicados en lugares no seguros o aptos para el público. Es responsabilidad del usuario tomar las precauciones necesarias para eliminar cualquier riesgo asociado con el uso de la información. El Departamento de Recursos Naturales y Ambientales no asume responsabilidad por el uso de los datos presentados en esta página.";
+      alert (myText);
+      }
+      window.addEventListener("load", myInit, true); function myInit(){showAlert(); myFunction()};
       //interactividad de las secciones colapsables
-      var coll = document.getElementsByClassName("collapsible");
+      var coll = document.getElementsByClassName("collapsible"); 
       var i;
 
       for (i = 0; i < coll.length; i++) {
-          coll[i].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var content = this.nextElementSibling;
-            if (content.style.display === "block") {
-              content.style.display = "none";
-            } else {
-              content.style.display = "block";
-            }
-          });
-        }
+        coll[i].addEventListener("click", function() {
+          this.classList.toggle("active");
+          var content = this.nextElementSibling;
+          if (content.style.maxHeight){
+            content.style.maxHeight = null;
+          } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+          } 
+        });
+      }
 
       //  create map object, tell it to live in 'map' div and give initial latitude, longitude, zoom values
       var map = L.map('map',{
@@ -292,7 +281,7 @@
             "</td></tr><tr><td><b>Uso o valor actual: </b>"+feature.properties.Uso_valor_actual+
             "</td></tr><tr><td><br><b>Peligros Naturales: </b></br>" +
               riesgos_popup+
-            "</td></tr><tr><td><a href=fichas.html#" +feature.properties.etiid+" target='_blank'><br>Más Información</br></a>"+ 
+            "</td></tr><tr><td><a href=fichas.html#" +feature.properties.ID+" target='_blank'><br>Más Información</br></a>"+ 
             "</td></tr></table>") 
         } else{
           layer.bindPopup("<div style=text-align:center><h3>"+feature.properties.Nombre+
@@ -301,7 +290,7 @@
           "<h3></div><hr><table><tr><td><b>Categoria: </b>"+feature.properties.Categoria+
           "</td></tr><tr><td><b>Subcategoria: </b>"+feature.properties.Subcategoria+
           "</td></tr><tr><td><b>Uso o valor actual: </b>"+feature.properties.Uso_valor_actual+
-          "</td></tr><tr><td><a href=fichas.html#" +feature.properties.etiid+" target='_blank'><br>Más Información</br></a>"+ 
+          "</td></tr><tr><td><a href=fichas.html#" +feature.properties.ID+" target='_blank'><br>Más Información</br></a>"+ 
           "</td></tr></table>")
         }
 		
